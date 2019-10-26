@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
-
-import { Product } from '../product';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators'; 
+
+import { Product } from '../product';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  productsUrl = "http://northwindapi.azurewebsites.net/api/products";
-  product: any = [];
+  //product: Product[] = [];
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient:HttpClient,
+    @Inject('apiUrl') private apiUrl) { }
 
   getProduct(): Observable<HttpResponse<Product[]>> {
     return this.httpClient.get<Product[]>(
-      this.productsUrl, {observe: 'response'});
+      this.apiUrl + '/products', {observe: 'response'});
   }
 }

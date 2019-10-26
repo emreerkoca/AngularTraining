@@ -1,18 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { Product } from './product';
-import { ProductService } from './service/product.service';
-import { HttpResponse } from '@angular/common/http';
+import {
+  Component,
+  OnInit,
+  ɵConsole
+} from '@angular/core';
+import {
+  Product
+} from './product';
+import {
+  ProductService
+} from './service/product.service';
+import {
+  HttpResponse
+} from '@angular/common/http';
+import {
+  CartService
+} from "../cart/service/cart.service";
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
-  providers:[ProductService] 
+  providers: [ProductService]
 })
 export class ProductComponent implements OnInit {
-  products: Product[] = []; 
+  products: Product[] = [];
+  addedProduct: string;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService,
+    private cartService: CartService) {}
 
   ngOnInit() {
     this.getProduct();
@@ -20,7 +35,7 @@ export class ProductComponent implements OnInit {
 
   getProduct() {
     this.productService.getProduct().subscribe(response => {
-      for(const p of response.body) {
+      for (const p of response.body) {
         this.products.push({
           productId: p.productId,
           categoryId: p.categoryId,
@@ -31,6 +46,10 @@ export class ProductComponent implements OnInit {
         });
       }
     });
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
   }
 
 }
