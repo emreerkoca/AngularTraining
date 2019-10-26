@@ -11,20 +11,14 @@ import { Category } from './category';
 
 export class CategoryComponent implements OnInit {
   categories: Category[] = [];
+  selectedCategory: Category;
 
   constructor(private categoryService: CategoryService) { }
 
   getCategories() {
     this.categoryService.getCategories().subscribe(response => {
-      console.log(response.body);
       for (const category of response.body) {
         this.categories.push({
-          categoryId: category.categoryId,
-          categoryName: category.categoryName,
-          seoUrl: category.seoUrl
-        });
-
-        console.log({
           categoryId: category.categoryId,
           categoryName: category.categoryName,
           seoUrl: category.seoUrl
@@ -35,5 +29,13 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     this.getCategories();
+  }
+
+  onSelect(category?: Category) {
+    if (category) {
+      this.selectedCategory = category;
+    } else {
+      this.selectedCategory = null;
+    }
   }
 }

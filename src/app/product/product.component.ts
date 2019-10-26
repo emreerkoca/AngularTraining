@@ -3,6 +3,7 @@ import {
   OnInit,
   ɵConsole
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   Product
 } from './product';
@@ -14,7 +15,7 @@ import {
 } from '@angular/common/http';
 import {
   CartService
-} from "../cart/service/cart.service";
+} from '../cart/service/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -27,14 +28,17 @@ export class ProductComponent implements OnInit {
   addedProduct: string;
 
   constructor(private productService: ProductService,
-    private cartService: CartService) {}
+    private cartService: CartService,
+    private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.getProduct();
+    this.activatedRoute.params.subscribe(params => {
+      this.getProducts(params['seoUrl']);
+    });
   }
 
-  getProduct() {
-    this.productService.getProduct().subscribe(response => {
+  getProducts(seoCategory: string) {
+    this.productService.getProducts(seoCategory).subscribe(response => {
       for (const p of response.body) {
         this.products.push({
           productId: p.productId,

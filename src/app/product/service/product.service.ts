@@ -9,13 +9,17 @@ import { Product } from '../product';
   providedIn: 'root'
 })
 export class ProductService {
-  //product: Product[] = [];
+  private routeUrl = '/products';
 
-  constructor(private httpClient:HttpClient,
+  constructor(private httpClient: HttpClient,
     @Inject('apiUrl') private apiUrl) { }
 
-  getProduct(): Observable<HttpResponse<Product[]>> {
+  getProducts(seoUrl: string): Observable<HttpResponse<Product[]>> {
+    if (seoUrl) {
+      this.routeUrl = '/products/' + seoUrl;
+    }
+
     return this.httpClient.get<Product[]>(
-      this.apiUrl + '/products', {observe: 'response'});
+      this.apiUrl + this.routeUrl, {observe: 'response'});
   }
 }

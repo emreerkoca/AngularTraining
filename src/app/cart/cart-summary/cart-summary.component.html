@@ -3,6 +3,14 @@
     My Cart : {{totalCartItemPrice | currency : 'USD' : true}} - {{totalCartItem}} 
   </button>
   <div class="dropdown-menu dropdown-menu-right">
+      <div class="border-bottom my-2"></div>
+      <div class="text-center">
+        <b>
+          <span routerLink="my-cart">
+            My Cart
+          </span>
+        </b>
+      </div>
     <button *ngFor="let item of cartItems" class="dropdown-item" type="button">
       {{item.product.productName | uppercase}} - ({{item.quantity}}) 
     </button>
